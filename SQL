@@ -1,0 +1,47 @@
+CREATE TABLE source_documents (
+  id SERIAL PRIMARY KEY,
+  source_id VARCHAR(100) UNIQUE,
+  filename VARCHAR(255),
+  uploaded_at TIMESTAMP DEFAULT NOW()
+);
+
+CREATE TABLE content_chunks (
+  id SERIAL PRIMARY KEY,
+  source_id VARCHAR(100) REFERENCES source_documents(source_id),
+  chunk_id VARCHAR(100) UNIQUE,
+  grade INT,
+  subject VARCHAR(100),
+  topic VARCHAR(100),
+  text TEXT,
+  chunk_index INT,
+  created_at TIMESTAMP DEFAULT NOW()
+);
+
+CREATE TABLE quiz_questions (
+  id SERIAL PRIMARY KEY,
+  question_id VARCHAR(100) UNIQUE,
+  source_chunk_id VARCHAR(100) REFERENCES content_chunks(chunk_id),
+  question TEXT,
+  type VARCHAR(20),
+  options JSONB,
+  answer TEXT,
+  difficulty VARCHAR(20),
+  created_at TIMESTAMP DEFAULT NOW()
+);
+
+CREATE TABLE student_answers (
+  id SERIAL PRIMARY KEY,
+  student_id VARCHAR(100),
+  question_id VARCHAR(100) REFERENCES quiz_questions(question_id),
+  selected_answer TEXT,
+  is_correct BOOLEAN,
+  submitted_at TIMESTAMP DEFAULT NOW()
+);
+
+CREATE TABLE student_difficulty (
+  id SERIAL PRIMARY KEY,
+  student_id VARCHAR(100) UNIQUE,
+  current_difficulty VARCHAR(20) DEFAULT 'easy',
+  correct_streak INT DEFAULT 0,
+  updated_at TIMESTAMP DEFAULT NOW()
+);
