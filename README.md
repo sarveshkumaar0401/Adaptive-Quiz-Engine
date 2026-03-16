@@ -1,6 +1,6 @@
 # Adaptive-Quiz-Engine
 
-# Peblo AI — Mini Content Ingestion + Adaptive Quiz Engine
+
 
 Built by **Sarvesh Kumaar SB**
 
